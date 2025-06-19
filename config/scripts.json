@@ -1,0 +1,14 @@
+[
+    {
+        "userid": "5291591455",
+        "ScriptID": "64f7338f8d92e126ae676f9b",
+        "ScriptNAME": "otp france",
+        "Voice": "fr-FR-BrigitteNeural"
+    },
+    {
+        "userid": "5836806295",
+        "ScriptID": "655a00b654105e766fd23050",
+        "ScriptNAME": "microsoft",
+        "Voice": "en-US-JennyMultilingualNeural"
+    }
+]

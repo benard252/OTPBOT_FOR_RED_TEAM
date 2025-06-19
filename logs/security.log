@@ -1,0 +1,4 @@
+2025-06-18 11:38:18 - SECURITY - INFO - OTP_REQUEST - User: web_user_1750246697065, Phone: +19***001, Script: bank, IP: 172.31.39.181
+2025-06-18 11:38:18 - SECURITY - WARNING - OTP_FAILURE - User: web_user_1750246697065, Phone: +19***001, Error: TTS generation failed: ElevenLabs API key not configured
+2025-06-18 11:38:50 - SECURITY - INFO - OTP_REQUEST - User: web_user_1750246728716, Phone: +19***001, Script: bank (SMS), IP: 172.31.39.181
+2025-06-18 11:38:50 - SECURITY - WARNING - OTP_FAILURE - User: web_user_1750246728716, Phone: +19***001, Error: Twilio client not initialized

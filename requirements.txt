@@ -1,0 +1,12 @@
+Flask==3.0.0
+Flask-CORS==4.0.0
+requests==2.31.0
+python-telegram-bot==20.7
+twilio==8.10.0
+elevenlabs==0.2.26
+python-dotenv==1.0.0
+gunicorn==21.2.0
+pyngrok==7.0.0
+asyncio==3.4.3
+aiohttp==3.9.1
+logging==0.4.9.6

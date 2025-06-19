@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Voice App - Educational Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .warning-banner {
+            background: #ff6b35;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            background: #fafafa;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            color: #333;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+        }
+
+        .response-area {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            min-height: 150px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online { background: #00b894; }
+        .status-offline { background: #e17055; }
+        .status-warning { background: #fdcb6e; }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .info-card h3, .info-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .telegram-info {
+            background: #74b9ff;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .telegram-info h3 {
+            margin-bottom: 15px;
+        }
+
+        .telegram-info code {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .config-tab {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .config-tab.active {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+        }
+
+        .config-panel {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .config-panel h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .config-panel p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .config-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .config-status.configured {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .config-status.not-configured {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .validation-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .validation-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .validation-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .validation-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .config-tab {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎙️ OTP Voice App</h1>
+            <p>Educational Platform for Voice-Based OTP Systems</p>
+        </div>
+
+        <div class="warning-banner">
+            ⚠️ EDUCATIONAL USE ONLY - This application is designed for learning and testing purposes
+        </div>
+
+        <div class="main-content">
+            <!-- Configuration Section -->
+            <div class="section">
+                <h2>⚙️ API Configuration</h2>
+                <p>Configure your API keys and settings before using the application</p>
+
+                <div style="margin-bottom: 20px;">
+                    <button class="btn" onclick="loadConfiguration()">🔄 Load Current Config</button>
+                    <button class="btn btn-secondary" onclick="validateAllConfiguration()">✅ Validate All</button>
+                </div>
+
+                <!-- Configuration Tabs -->
+                <div style="margin-bottom: 30px;">
+                    <button class="config-tab btn" onclick="showConfigTab('twilio')" id="tab-twilio">📞 Twilio</button>
+                    <button class="config-tab btn btn-secondary" onclick="showConfigTab('elevenlabs')" id="tab-elevenlabs">🎙️ ElevenLabs</button>
+                    <button class="config-tab btn btn-secondary" onclick="showConfigTab('telegram')" id="tab-telegram">🤖 Telegram</button>
+                    <button class="config-tab btn btn-secondary" onclick="showConfigTab('ngrok')" id="tab-ngrok">🌐 Ngrok</button>
+                </div>
+
+                <!-- Twilio Configuration -->
+                <div id="config-twilio" class="config-panel" style="display: block;">
+                    <h3>📞 Twilio Configuration</h3>
+                    <p>Configure Twilio for voice calls and SMS delivery</p>
+
+                    <form id="twilioConfigForm">
+                        <div class="form-group">
+                            <label for="twilioAccountSid">Account SID:</label>
+                            <input type="text" id="twilioAccountSid" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="twilioAuthToken">Auth Token:</label>
+                            <input type="password" id="twilioAuthToken" placeholder="Your Twilio Auth Token">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="twilioPhoneNumber">Phone Number:</label>
+                            <input type="tel" id="twilioPhoneNumber" placeholder="+1234567890">
+                        </div>
+
+                        <button type="button" class="btn" onclick="updateTwilioConfig()">💾 Save Twilio Config</button>
+                        <button type="button" class="btn btn-secondary" onclick="testConfiguration('twilio')">🧪 Test Connection</button>
+                    </form>
+                </div>
+
+                <!-- ElevenLabs Configuration -->
+                <div id="config-elevenlabs" class="config-panel" style="display: none;">
+                    <h3>🎙️ ElevenLabs Configuration</h3>
+                    <p>Configure ElevenLabs for high-quality text-to-speech</p>
+
+                    <form id="elevenlabsConfigForm">
+                        <div class="form-group">
+                            <label for="elevenlabsApiKey">API Key:</label>
+                            <input type="password" id="elevenlabsApiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="elevenlabsDefaultVoice">Default Voice:</label>
+                            <select id="elevenlabsDefaultVoice">
+                                <option value="Rachel">Rachel (English)</option>
+                                <option value="Sarah">Sarah (French)</option>
+                                <option value="Emily">Emily (English)</option>
+                                <option value="Adam">Adam (English)</option>
+                                <option value="Paul">Paul (English)</option>
+                                <option value="Drew">Drew (Casual)</option>
+                                <option value="Antoni">Antoni (British)</option>
+                            </select>
+                        </div>
+
+                        <button type="button" class="btn" onclick="updateElevenLabsConfig()">💾 Save ElevenLabs Config</button>
+                        <button type="button" class="btn btn-secondary" onclick="testConfiguration('elevenlabs')">🧪 Test Connection</button>
+                    </form>
+                </div>
+
+                <!-- Telegram Configuration -->
+                <div id="config-telegram" class="config-panel" style="display: none;">
+                    <h3>🤖 Telegram Configuration</h3>
+                    <p>Configure Telegram bot for command interface</p>
+
+                    <form id="telegramConfigForm">
+                        <div class="form-group">
+                            <label for="telegramBotToken">Bot Token:</label>
+                            <input type="password" id="telegramBotToken" placeholder="123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telegramPublicChat">Public Chat ID:</label>
+                            <input type="text" id="telegramPublicChat" placeholder="-1002216623779">
+                        </div>
+
+                        <button type="button" class="btn" onclick="updateTelegramConfig()">💾 Save Telegram Config</button>
+                        <button type="button" class="btn btn-secondary" onclick="testConfiguration('telegram')">🧪 Test Connection</button>
+                    </form>
+                </div>
+
+                <!-- Ngrok Configuration -->
+                <div id="config-ngrok" class="config-panel" style="display: none;">
+                    <h3>🌐 Ngrok Configuration</h3>
+                    <p>Configure Ngrok tunnel for webhook support</p>
+
+                    <form id="ngrokConfigForm">
+                        <div class="form-group">
+                            <label for="ngrokUrl">Ngrok URL:</label>
+                            <input type="url" id="ngrokUrl" placeholder="https://abc123.ngrok-free.app">
+                        </div>
+
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <h4>📋 Setup Instructions:</h4>
+                            <p>1. Install ngrok: <code>brew install ngrok</code> or download from ngrok.com</p>
+                            <p>2. Run: <code>ngrok http 5000</code></p>
+                            <p>3. Copy the https URL and paste it above</p>
+                        </div>
+
+                        <button type="button" class="btn" onclick="updateNgrokConfig()">💾 Save Ngrok Config</button>
+                        <button type="button" class="btn btn-secondary" onclick="testConfiguration('ngrok')">🧪 Test Connection</button>
+                    </form>
+                </div>
+
+                <div id="configResponse" class="response-area"></div>
+            </div>
+
+            <!-- Voice OTP Section -->
+            <div class="section">
+                <h2>📞 Voice OTP Generation</h2>
+                <form id="voiceOtpForm">
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number:</label>
+                        <input type="tel" id="phoneNumber" placeholder="+1234567890" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scriptName">Script Type:</label>
+                        <select id="scriptName">
+                            <option value="default">Default</option>
+                            <option value="microsoft">Microsoft</option>
+                            <option value="otp france">OTP France</option>
+                            <option value="bank">Bank</option>
+                            <option value="google">Google</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="voiceName">Voice:</label>
+                        <select id="voiceName">
+                            <option value="Rachel">Rachel (English)</option>
+                            <option value="Sarah">Sarah (French)</option>
+                            <option value="Emily">Emily (English)</option>
+                            <option value="Adam">Adam (English)</option>
+                            <option value="Paul">Paul (English)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn">🎙️ Generate Voice OTP</button>
+                    <button type="button" class="btn btn-secondary" onclick="sendSmsOtp()">📱 Send SMS Backup</button>
+                </form>
+
+                <div id="voiceResponse" class="response-area"></div>
+            </div>
+
+            <!-- Live Call Control Section -->
+            <div class="section">
+                <h2>📞 Live Call Control Dashboard</h2>
+                <p>Monitor and control active voice calls in real-time</p>
+
+                <div style="margin-bottom: 20px;">
+                    <button class="btn" onclick="refreshActiveCalls()">🔄 Refresh Active Calls</button>
+                    <button class="btn btn-secondary" onclick="getCallHistory()">📋 View Call History</button>
+                    <button class="btn" onclick="startAutoRefresh()" id="autoRefreshBtn">▶️ Auto Refresh</button>
+                </div>
+
+                <!-- Active Calls Table -->
+                <div id="activeCallsSection" style="margin-bottom: 30px;">
+                    <h3>🟢 Active Calls</h3>
+                    <div id="activeCallsTable" class="response-area"></div>
+                </div>
+
+                <!-- Call Control Panel -->
+                <div style="margin-bottom: 30px;">
+                    <h3>🎛️ Call Control Panel</h3>
+                    <form id="callControlForm" style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                        <div class="form-group">
+                            <label for="controlCallSid">Call SID:</label>
+                            <input type="text" id="controlCallSid" placeholder="Enter Call SID">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transferNumber">Transfer To (for transfer action):</label>
+                            <input type="tel" id="transferNumber" placeholder="+1234567890">
+                        </div>
+
+                        <button type="button" class="btn btn-danger" onclick="terminateCall()">🛑 Terminate Call</button>
+                        <button type="button" class="btn btn-secondary" onclick="transferCall()">📞 Transfer Call</button>
+                    </form>
+                </div>
+
+                <!-- Call Statistics -->
+                <div>
+                    <h3>📊 Call Statistics</h3>
+                    <div id="callStats" class="info-grid">
+                        <div class="info-card">
+                            <h4>Total Active</h4>
+                            <p id="totalActive">-</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Accepted OTPs</h4>
+                            <p id="acceptedOtps">-</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Denied OTPs</h4>
+                            <p id="deniedOtps">-</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Timeouts</h4>
+                            <p id="timeouts">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="callControlResponse" class="response-area"></div>
+            </div>
+
+            <!-- Service Status Section -->
+            <div class="section">
+                <h2>📊 Service Status</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3><span class="status-indicator status-warning"></span>Twilio Voice</h3>
+                        <p>Voice calling service</p>
+                        <button class="btn" onclick="checkTwilioStatus()">Check Status</button>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><span class="status-indicator status-warning"></span>ElevenLabs TTS</h3>
+                        <p>Text-to-speech service</p>
+                        <button class="btn" onclick="checkElevenLabsStatus()">Check Status</button>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><span class="status-indicator status-online"></span>Telegram Bot</h3>
+                        <p>Bot integration active</p>
+                        <button class="btn" onclick="checkTelegramStatus()">Check Status</button>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><span class="status-indicator status-online"></span>Web App</h3>
+                        <p>API services running</p>
+                        <button class="btn" onclick="checkApiStatus()">Check Status</button>
+                    </div>
+                </div>
+
+                <div id="statusResponse" class="response-area"></div>
+            </div>
+
+            <!-- Telegram Integration Section -->
+            <div class="section">
+                <h2>🤖 Telegram Bot Integration</h2>
+                <div class="telegram-info">
+                    <h3>How to use the Telegram Bot:</h3>
+                    <p>1. Start a chat with the bot</p>
+                    <p>2. Use command: <code>/otp +1234567890 microsoft</code></p>
+                    <p>3. Results will be sent to the configured public chat</p>
+                    <p>4. Check bot status: <code>/status</code></p>
+                </div>
+
+                <button class="btn" onclick="getBotInfo()">Get Bot Information</button>
+                <button class="btn btn-secondary" onclick="getWebhookInfo()">Webhook Status</button>
+
+                <div id="telegramResponse" class="response-area"></div>
+            </div>
+
+            <!-- Testing Section -->
+            <div class="section">
+                <h2>🧪 Testing & Validation</h2>
+                <form id="testForm">
+                    <div class="form-group">
+                        <label for="testPhone">Test Phone Number:</label>
+                        <input type="tel" id="testPhone" placeholder="+1234567890">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="testMessage">Test Message:</label>
+                        <input type="text" id="testMessage" placeholder="This is a test call" value="This is a test call from OTP Voice App">
+                    </div>
+
+                    <button type="button" class="btn" onclick="validatePhone()">Validate Phone</button>
+                    <button type="button" class="btn btn-secondary" onclick="testVoiceCall()">Test Voice Call</button>
+                    <button type="button" class="btn btn-danger" onclick="generateTestAudio()">Generate Test Audio</button>
+                </form>
+
+                <div id="testResponse" class="response-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API base URL
+        const API_BASE = '/api';
+        const TELEGRAM_BASE = '/telegram';
+        const VOICE_BASE = '/voice';
+
+        // Auto-refresh active calls every 5 seconds
+        let autoRefreshInterval;
+        let isAutoRefreshEnabled = false;
+
+        // Voice OTP Form Handler
+        document.getElementById('voiceOtpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const scriptName = document.getElementById('scriptName').value;
+            const voiceName = document.getElementById('voiceName').value;
+
+            if (!phoneNumber) {
+                alert('Please enter a phone number');
+                return;
+            }
+
+            try {
+                showLoading('voiceResponse', 'Generating voice OTP...');
+
+                const response = await fetch(`${API_BASE}/otp/voice`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phone_number: phoneNumber,
+                        script_name: scriptName,
+                        user_id: 'web_user_' + Date.now()
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('voiceResponse', data);
+
+                // Auto-refresh active calls after OTP generation
+                setTimeout(refreshActiveCalls, 2000);
+
+            } catch (error) {
+                displayError('voiceResponse', error.message);
+            }
+        });
+
+        // Send SMS OTP
+        async function sendSmsOtp() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const scriptName = document.getElementById('scriptName').value;
+
+            if (!phoneNumber) {
+                alert('Please enter a phone number');
+                return;
+            }
+
+            try {
+                showLoading('voiceResponse', 'Sending SMS OTP...');
+
+                const response = await fetch(`${API_BASE}/otp/sms`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phone_number: phoneNumber,
+                        script_name: scriptName,
+                        user_id: 'web_user_' + Date.now()
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('voiceResponse', data);
+
+            } catch (error) {
+                displayError('voiceResponse', error.message);
+            }
+        }
+
+        // Call Control Functions
+        async function refreshActiveCalls() {
+            try {
+                showLoading('activeCallsTable', 'Loading active calls...');
+                const response = await fetch(`${VOICE_BASE}/control/active_calls`);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayActiveCallsTable(data.active_calls);
+                    updateCallStats(data.active_calls);
+                } else {
+                    displayError('activeCallsTable', data.error);
+                }
+            } catch (error) {
+                displayError('activeCallsTable', error.message);
+            }
+        }
+
+        function startAutoRefresh() {
+            const btn = document.getElementById('autoRefreshBtn');
+            if (isAutoRefreshEnabled) {
+                clearInterval(autoRefreshInterval);
+                isAutoRefreshEnabled = false;
+                btn.textContent = '▶️ Auto Refresh';
+                btn.className = 'btn';
+            } else {
+                autoRefreshInterval = setInterval(refreshActiveCalls, 3000);
+                isAutoRefreshEnabled = true;
+                btn.textContent = '⏸️ Stop Auto Refresh';
+                btn.className = 'btn btn-danger';
+                refreshActiveCalls(); // Initial load
+            }
+        }
+
+        async function getCallHistory() {
+            try {
+                showLoading('callControlResponse', 'Loading call history...');
+                const response = await fetch(`${VOICE_BASE}/control/call_history`);
+                const data = await response.json();
+                displayResponse('callControlResponse', data);
+            } catch (error) {
+                displayError('callControlResponse', error.message);
+            }
+        }
+
+        async function terminateCall() {
+            const callSid = document.getElementById('controlCallSid').value;
+
+            if (!callSid) {
+                alert('Please enter a Call SID');
+                return;
+            }
+
+            try {
+                showLoading('callControlResponse', 'Terminating call...');
+                const response = await fetch(`${VOICE_BASE}/control/terminate/${callSid}`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+                displayResponse('callControlResponse', data);
+
+                if (data.success) {
+                    refreshActiveCalls();
+                    document.getElementById('controlCallSid').value = '';
+                }
+            } catch (error) {
+                displayError('callControlResponse', error.message);
+            }
+        }
+
+        async function transferCall() {
+            const callSid = document.getElementById('controlCallSid').value;
+            const transferNumber = document.getElementById('transferNumber').value;
+
+            if (!callSid || !transferNumber) {
+                alert('Please enter both Call SID and Transfer Number');
+                return;
+            }
+
+            try {
+                showLoading('callControlResponse', 'Transferring call...');
+                const response = await fetch(`${VOICE_BASE}/control/transfer/${callSid}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        transfer_to: transferNumber
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('callControlResponse', data);
+
+                if (data.success) {
+                    refreshActiveCalls();
+                }
+            } catch (error) {
+                displayError('callControlResponse', error.message);
+            }
+        }
+
+        function displayActiveCallsTable(calls) {
+            const tableElement = document.getElementById('activeCallsTable');
+
+            if (calls.length === 0) {
+                tableElement.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">No active calls</p>';
+                return;
+            }
+
+            let tableHTML = `
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="background: #f0f0f0;">
+                            <th style="padding: 8px; border: 1px solid #ddd;">Call SID</th>
+                            <th style="padding: 8px; border: 1px solid #ddd;">Status</th>
+                            <th style="padding: 8px; border: 1px solid #ddd;">OTP Code</th>
+                            <th style="padding: 8px; border: 1px solid #ddd;">User Response</th>
+                            <th style="padding: 8px; border: 1px solid #ddd;">Duration</th>
+                            <th style="padding: 8px; border: 1px solid #ddd;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            calls.forEach(call => {
+                const statusColor = call.status === 'in-progress' ? '#00b894' : '#fdcb6e';
+                const responseEmoji = call.user_response === '1' ? '✅ Accepted' :
+                                    call.user_response === '2' ? '❌ Denied' :
+                                    call.user_response === '0' ? '🔄 Repeat' : '⏳ Pending';
+
+                tableHTML += `
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace; font-size: 0.8rem;">${call.call_sid.substring(0, 15)}...</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; color: ${statusColor}; font-weight: bold;">${call.status}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold; text-align: center;">${call.otp_code || '-'}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${responseEmoji}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${call.duration || '0'}s</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">
+                            <button onclick="document.getElementById('controlCallSid').value='${call.call_sid}'" style="padding: 4px 8px; font-size: 0.8rem; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">Select</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += '</tbody></table>';
+            tableElement.innerHTML = tableHTML;
+        }
+
+        function updateCallStats(calls) {
+            const totalActive = calls.filter(c => c.status === 'in-progress').length;
+            const accepted = calls.filter(c => c.user_response === '1').length;
+            const denied = calls.filter(c => c.user_response === '2').length;
+            const timeouts = calls.filter(c => c.timeout).length;
+
+            document.getElementById('totalActive').textContent = totalActive;
+            document.getElementById('acceptedOtps').textContent = accepted;
+            document.getElementById('deniedOtps').textContent = denied;
+            document.getElementById('timeouts').textContent = timeouts;
+        }
+
+        // Status Check Functions
+        async function checkTwilioStatus() {
+            try {
+                showLoading('statusResponse', 'Checking Twilio status...');
+                const response = await fetch(`${VOICE_BASE}/status`);
+                const data = await response.json();
+                displayResponse('statusResponse', data);
+            } catch (error) {
+                displayError('statusResponse', error.message);
+            }
+        }
+
+        async function checkElevenLabsStatus() {
+            try {
+                showLoading('statusResponse', 'Checking ElevenLabs status...');
+                const response = await fetch(`${VOICE_BASE}/available_voices`);
+                const data = await response.json();
+                displayResponse('statusResponse', data);
+            } catch (error) {
+                displayError('statusResponse', error.message);
+            }
+        }
+
+        async function checkTelegramStatus() {
+            try {
+                showLoading('statusResponse', 'Checking Telegram status...');
+                const response = await fetch(`${TELEGRAM_BASE}/status`);
+                const data = await response.json();
+                displayResponse('statusResponse', data);
+            } catch (error) {
+                displayError('statusResponse', error.message);
+            }
+        }
+
+        async function checkApiStatus() {
+            try {
+                showLoading('statusResponse', 'Checking API status...');
+                const response = await fetch('/health');
+                const data = await response.json();
+                displayResponse('statusResponse', data);
+            } catch (error) {
+                displayError('statusResponse', error.message);
+            }
+        }
+
+        // Telegram Functions
+        async function getBotInfo() {
+            try {
+                showLoading('telegramResponse', 'Getting bot information...');
+                const response = await fetch(`${TELEGRAM_BASE}/bot_info`);
+                const data = await response.json();
+                displayResponse('telegramResponse', data);
+            } catch (error) {
+                displayError('telegramResponse', error.message);
+            }
+        }
+
+        async function getWebhookInfo() {
+            try {
+                showLoading('telegramResponse', 'Getting webhook information...');
+                const response = await fetch(`${TELEGRAM_BASE}/webhook_info`);
+                const data = await response.json();
+                displayResponse('telegramResponse', data);
+            } catch (error) {
+                displayError('telegramResponse', error.message);
+            }
+        }
+
+        // Testing Functions
+        async function validatePhone() {
+            const phoneNumber = document.getElementById('testPhone').value;
+
+            if (!phoneNumber) {
+                alert('Please enter a phone number to validate');
+                return;
+            }
+
+            try {
+                showLoading('testResponse', 'Validating phone number...');
+                const response = await fetch(`${API_BASE}/validate/phone`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phone_number: phoneNumber
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('testResponse', data);
+            } catch (error) {
+                displayError('testResponse', error.message);
+            }
+        }
+
+        async function testVoiceCall() {
+            const phoneNumber = document.getElementById('testPhone').value;
+            const message = document.getElementById('testMessage').value;
+
+            if (!phoneNumber) {
+                alert('Please enter a phone number for testing');
+                return;
+            }
+
+            try {
+                showLoading('testResponse', 'Making test voice call...');
+                const response = await fetch(`${VOICE_BASE}/test_call`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        to_number: phoneNumber,
+                        message: message,
+                        voice: 'Rachel'
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('testResponse', data);
+            } catch (error) {
+                displayError('testResponse', error.message);
+            }
+        }
+
+        async function generateTestAudio() {
+            const message = document.getElementById('testMessage').value;
+
+            try {
+                showLoading('testResponse', 'Generating test audio...');
+                const response = await fetch(`${VOICE_BASE}/generate_audio`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: message,
+                        voice: 'Rachel',
+                        script_name: 'default'
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('testResponse', data);
+            } catch (error) {
+                displayError('testResponse', error.message);
+            }
+        }
+
+        // Utility Functions
+        function showLoading(elementId, message) {
+            document.getElementById(elementId).innerHTML = `<div style="color: #667eea; text-align: center; padding: 20px;">⏳ ${message}</div>`;
+        }
+
+        function displayResponse(elementId, data) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        function displayError(elementId, error) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div style="color: #e17055; text-align: center; padding: 20px;">❌ Error: ${error}</div>`;
+        }
+
+        // Configuration Management Functions
+        function showConfigTab(service) {
+            // Hide all config panels
+            const panels = document.querySelectorAll('.config-panel');
+            panels.forEach(panel => panel.style.display = 'none');
+
+            // Show selected panel
+            document.getElementById(`config-${service}`).style.display = 'block';
+
+            // Update tab styles
+            const tabs = document.querySelectorAll('.config-tab');
+            tabs.forEach(tab => {
+                tab.className = 'config-tab btn btn-secondary';
+            });
+
+            document.getElementById(`tab-${service}`).className = 'config-tab btn active';
+        }
+
+        async function loadConfiguration() {
+            try {
+                showLoading('configResponse', 'Loading current configuration...');
+                const response = await fetch(`${API_BASE}/config`);
+                const data = await response.json();
+
+                if (data.success) {
+                    populateConfigurationForm(data.configuration);
+                    updateConfigurationStatus(data.configuration);
+                    displayResponse('configResponse', {
+                        success: true,
+                        message: 'Configuration loaded successfully',
+                        configuration: data.configuration
+                    });
+                } else {
+                    displayError('configResponse', data.error);
+                }
+            } catch (error) {
+                displayError('configResponse', error.message);
+            }
+        }
+
+        function populateConfigurationForm(config) {
+            // Populate Twilio fields
+            if (config.twilio.account_sid && config.twilio.account_sid !== 'None') {
+                document.getElementById('twilioAccountSid').value = config.twilio.account_sid.replace('...', '');
+            }
+            if (config.twilio.phone_number && config.twilio.phone_number !== 'None') {
+                document.getElementById('twilioPhoneNumber').value = config.twilio.phone_number;
+            }
+
+            // Populate ElevenLabs fields
+            if (config.elevenlabs.default_voice) {
+                document.getElementById('elevenlabsDefaultVoice').value = config.elevenlabs.default_voice;
+            }
+
+            // Populate Telegram fields
+            if (config.telegram.public_chat && config.telegram.public_chat !== 'None') {
+                document.getElementById('telegramPublicChat').value = config.telegram.public_chat;
+            }
+
+            // Populate Ngrok fields
+            if (config.ngrok.url && config.ngrok.url !== 'None') {
+                document.getElementById('ngrokUrl').value = config.ngrok.url;
+            }
+        }
+
+        function updateConfigurationStatus(config) {
+            // Update tab labels with status indicators
+            const services = ['twilio', 'elevenlabs', 'telegram', 'ngrok'];
+
+            services.forEach(service => {
+                const tab = document.getElementById(`tab-${service}`);
+                const isConfigured = config[service].configured;
+
+                // Remove existing status
+                const existingStatus = tab.querySelector('.config-status');
+                if (existingStatus) {
+                    existingStatus.remove();
+                }
+
+                // Add status indicator
+                const statusSpan = document.createElement('span');
+                statusSpan.className = `config-status ${isConfigured ? 'configured' : 'not-configured'}`;
+                statusSpan.textContent = isConfigured ? '✓' : '✗';
+                tab.appendChild(statusSpan);
+            });
+        }
+
+        async function updateTwilioConfig() {
+            const accountSid = document.getElementById('twilioAccountSid').value;
+            const authToken = document.getElementById('twilioAuthToken').value;
+            const phoneNumber = document.getElementById('twilioPhoneNumber').value;
+
+            if (!accountSid || !authToken || !phoneNumber) {
+                alert('Please fill in all Twilio fields');
+                return;
+            }
+
+            try {
+                showLoading('configResponse', 'Updating Twilio configuration...');
+
+                const response = await fetch(`${API_BASE}/config`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        service: 'twilio',
+                        settings: {
+                            account_sid: accountSid,
+                            auth_token: authToken,
+                            phone_number: phoneNumber
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('configResponse', data);
+
+                if (data.success) {
+                    // Clear password field for security
+                    document.getElementById('twilioAuthToken').value = '';
+                    // Reload configuration to update status
+                    setTimeout(loadConfiguration, 1000);
+                }
+            } catch (error) {
+                displayError('configResponse', error.message);
+            }
+        }
+
+        async function updateElevenLabsConfig() {
+            const apiKey = document.getElementById('elevenlabsApiKey').value;
+            const defaultVoice = document.getElementById('elevenlabsDefaultVoice').value;
+
+            if (!apiKey) {
+                alert('Please enter your ElevenLabs API key');
+                return;
+            }
+
+            try {
+                showLoading('configResponse', 'Updating ElevenLabs configuration...');
+
+                const response = await fetch(`${API_BASE}/config`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        service: 'elevenlabs',
+                        settings: {
+                            api_key: apiKey,
+                            default_voice: defaultVoice
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('configResponse', data);
+
+                if (data.success) {
+                    // Clear password field for security
+                    document.getElementById('elevenlabsApiKey').value = '';
+                    // Reload configuration to update status
+                    setTimeout(loadConfiguration, 1000);
+                }
+            } catch (error) {
+                displayError('configResponse', error.message);
+            }
+        }
+
+        async function updateTelegramConfig() {
+            const botToken = document.getElementById('telegramBotToken').value;
+            const publicChat = document.getElementById('telegramPublicChat').value;
+
+            if (!botToken) {
+                alert('Please enter your Telegram bot token');
+                return;
+            }
+
+            try {
+                showLoading('configResponse', 'Updating Telegram configuration...');
+
+                const response = await fetch(`${API_BASE}/config`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        service: 'telegram',
+                        settings: {
+                            bot_token: botToken,
+                            public_chat: publicChat
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('configResponse', data);
+
+                if (data.success) {
+                    // Clear password field for security
+                    document.getElementById('telegramBotToken').value = '';
+                    // Reload configuration to update status
+                    setTimeout(loadConfiguration, 1000);
+                }
+            } catch (error) {
+                displayError('configResponse', error.message);
+            }
+        }
+
+        async function updateNgrokConfig() {
+            const ngrokUrl = document.getElementById('ngrokUrl').value;
+
+            if (!ngrokUrl) {
+                alert('Please enter your Ngrok URL');
+                return;
+            }
+
+            if (!ngrokUrl.startsWith('https://') || !ngrokUrl.includes('ngrok')) {
+                alert('Please enter a valid Ngrok HTTPS URL');
+                return;
+            }
+
+            try {
+                showLoading('configResponse', 'Updating Ngrok configuration...');
+
+                const response = await fetch(`${API_BASE}/config`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        service: 'ngrok',
+                        settings: {
+                            url: ngrokUrl
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                displayResponse('configResponse', data);
+
+                if (data.success) {
+                    // Reload configuration to update status
+                    setTimeout(loadConfiguration, 1000);
+                }
+            } catch (error) {
+                displayError('configResponse', error.message);
+            }
+        }
+
+        async function testConfiguration(service) {
+            try {
+                showLoading('configResponse', `Testing ${service} configuration...`);
+
+                const response = await fetch(`${API_BASE}/config/test/${service}`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                // Create a validation result div
+                const resultDiv = document.createElement('div');
+                resultDiv.className = `validation-result ${data.success ? 'validation-success' : 'validation-error'}`;
+
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <strong>✅ ${service.toUpperCase()} Test Successful!</strong><br>
+                        ${data.message}
+                        ${service === 'twilio' ? `<br>Account: ${data.account_name} (${data.status})` : ''}
+                        ${service === 'elevenlabs' ? `<br>Available voices: ${data.available_voices}, Default: ${data.default_voice}` : ''}
+                        ${service === 'telegram' ? `<br>Bot: @${data.bot_username} (${data.bot_name})` : ''}
+                        ${service === 'ngrok' ? `<br>URL: ${data.url}` : ''}
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <strong>❌ ${service.toUpperCase()} Test Failed!</strong><br>
+                        ${data.error}
+                    `;
+                }
+
+                // Clear previous response and show result
+                const responseArea = document.getElementById('configResponse');
+                responseArea.innerHTML = '';
+                responseArea.appendChild(resultDiv);
+
+            } catch (error) {
+                displayError('configResponse', error.message);
+            }
+        }
+
+        async function validateAllConfiguration() {
+            try {
+                showLoading('configResponse', 'Validating all configurations...');
+
+                const services = ['twilio', 'elevenlabs', 'telegram', 'ngrok'];
+                const results = [];
+
+                for (const service of services) {
+                    try {
+                        const response = await fetch(`${API_BASE}/config/test/${service}`, {
+                            method: 'POST'
+                        });
+                        const data = await response.json();
+                        results.push({
+                            service: service,
+                            success: data.success,
+                            message: data.message || data.error
+                        });
+                    } catch (error) {
+                        results.push({
+                            service: service,
+                            success: false,
+                            message: error.message
+                        });
+                    }
+                }
+
+                // Display all results
+                let resultHtml = '<h3>🔍 Configuration Validation Results:</h3>';
+                results.forEach(result => {
+                    const status = result.success ? '✅' : '❌';
+                    const cssClass = result.success ? 'validation-success' : 'validation-error';
+                    resultHtml += `
+                        <div class="validation-result ${cssClass}" style="margin-bottom: 10px;">
+                            <strong>${status} ${result.service.toUpperCase()}:</strong> ${result.message}
+                        </div>
+                    `;
+                });
+
+                document.getElementById('configResponse').innerHTML = resultHtml;
+
+            } catch (error) {
+                displayError('configResponse', error.message);
+            }
+        }
+
+        // Load initial status on page load
+        window.addEventListener('load', () => {
+            checkApiStatus();
+            refreshActiveCalls();
+            loadConfiguration(); // Load configuration on page load
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "bottoken": "7905681450:AAGuWHoJgNgn-y22Sy_YzwtoyJ27nktlSRQ",
+  "ngrok": "https://56ac-158-51-123-196.ngrok-free.app",
+  "twilio": {
+    "account_sid": "YOUR_TWILIO_ACCOUNT_SID",
+    "auth_token": "YOUR_TWILIO_AUTH_TOKEN",
+    "phone_number": "YOUR_TWILIO_PHONE_NUMBER"
+  },
+  "elevenlabs": {
+    "api_key": "YOUR_ELEVENLABS_API_KEY",
+    "default_voice": "Rachel"
+  },
+  "spoofs": "12109647678",
+  "spoof": "12109647678",
+  "public_chat": "-1002216623779",
+  "webhook": {
+    "secret": "your-webhook-secret-here"
+  }
+}
